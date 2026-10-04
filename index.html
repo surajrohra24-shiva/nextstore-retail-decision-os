@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>NEXTSTORE — Retail Expansion Decision OS</title>
+<style>
+  :root{--bg:#07111f;--panel:#0c1a2b;--panel2:#10243a;--line:#203955;--text:#edf5ff;--muted:#8ea6be;--cyan:#40d9ff;--violet:#8b7cff;--green:#5ee2a7;--amber:#ffc857;--red:#ff6b7a;--shadow:0 18px 55px rgba(0,0,0,.28)}
+  *{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 85% 10%,rgba(64,217,255,.09),transparent 30%),radial-gradient(circle at 20% 0%,rgba(139,124,255,.08),transparent 28%),var(--bg);color:var(--text);font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;letter-spacing:.01em}
+  button,input{font:inherit}.app{min-height:100vh}.topbar{height:74px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:rgba(7,17,31,.83);backdrop-filter:blur(18px);position:sticky;top:0;z-index:30}.brand{display:flex;gap:13px;align-items:center}.mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--violet));display:grid;place-items:center;color:#07111f;font-weight:900;box-shadow:0 0 34px rgba(64,217,255,.24)}.brand h1{margin:0;font-size:17px;letter-spacing:.14em}.brand .sub{font-size:11px;color:var(--muted);margin-top:2px}.top-actions{display:flex;gap:10px;align-items:center}.pill{border:1px solid var(--line);padding:7px 11px;border-radius:999px;font-size:11px;color:var(--muted);background:rgba(255,255,255,.02)}.pill.live{color:var(--green);border-color:rgba(94,226,167,.32)}
+  .shell{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 74px)}.sidebar{border-right:1px solid var(--line);padding:24px 16px;background:rgba(8,19,33,.56)}.nav-title{font-size:10px;color:#647f98;text-transform:uppercase;letter-spacing:.16em;margin:14px 10px 10px}.nav button{width:100%;text-align:left;color:var(--muted);background:transparent;border:1px solid transparent;border-radius:11px;padding:11px 12px;margin-bottom:5px;cursor:pointer}.nav button.active,.nav button:hover{background:rgba(64,217,255,.07);border-color:rgba(64,217,255,.13);color:var(--text)}.nav button span{display:inline-block;width:24px;color:var(--cyan)}.side-note{margin-top:28px;padding:13px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.018);font-size:11px;line-height:1.5;color:var(--muted)}
+  main{padding:25px 28px 40px;max-width:1680px;width:100%;margin:auto}.hero{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:18px}.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:var(--cyan);font-weight:800}.hero h2{font-size:31px;margin:5px 0 5px}.hero p{margin:0;color:var(--muted);max-width:720px;font-size:13px;line-height:1.45}.hero-right{display:flex;gap:10px;align-items:center}.btn{cursor:pointer;border:1px solid var(--line);background:#0c1b2d;color:var(--text);border-radius:10px;padding:10px 12px;font-size:12px}.btn.primary{background:linear-gradient(135deg,#17b9e7,#7769f9);border:none;color:#07111f;font-weight:800;box-shadow:0 10px 26px rgba(64,217,255,.12)}.btn:hover{transform:translateY(-1px)}
+  .grid{display:grid;gap:14px}.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:14px}.card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(16,36,58,.92),rgba(10,25,43,.94));border-radius:15px;box-shadow:var(--shadow)}.kpi{padding:16px}.kpi .label{font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted)}.kpi .value{font-size:24px;font-weight:800;margin-top:8px}.kpi .delta{margin-top:7px;font-size:11px;color:var(--muted)}.kpi .accent{color:var(--green)}
+  .dashboard-grid{grid-template-columns:1.45fr .95fr;margin-bottom:14px}.card-head{display:flex;align-items:center;justify-content:space-between;padding:15px 17px;border-bottom:1px solid var(--line)}.card-head h3{margin:0;font-size:13px}.card-head small{color:var(--muted);font-size:10px}.rank-card{padding-bottom:3px}.rank-row{display:grid;grid-template-columns:30px 1.35fr .9fr .8fr .8fr 80px;gap:9px;align-items:center;padding:12px 17px;border-bottom:1px solid rgba(32,57,85,.62);font-size:12px}.rank-row:last-child{border-bottom:none}.rank-row:hover{background:rgba(255,255,255,.022)}.rank-num{color:#5e7690;font-weight:800}.site-btn{border:0;background:none;color:var(--text);cursor:pointer;text-align:left;font-weight:800}.site-sub{font-size:10px;color:var(--muted);margin-top:2px}.num{font-variant-numeric:tabular-nums}.status{font-size:9px;letter-spacing:.12em;font-weight:900;border-radius:999px;padding:6px 7px;text-align:center;border:1px solid}.status.open{color:var(--green);border-color:rgba(94,226,167,.30);background:rgba(94,226,167,.06)}.status.validate{color:var(--amber);border-color:rgba(255,200,87,.30);background:rgba(255,200,87,.06)}.status.reject{color:var(--red);border-color:rgba(255,107,122,.30);background:rgba(255,107,122,.06)}
+  .map-wrap{padding:14px 14px 8px}.map{width:100%;height:315px;border-radius:13px;background:linear-gradient(135deg,#081524,#0b2138);border:1px solid #183149;overflow:hidden;position:relative}.map svg{width:100%;height:100%}.map-legend{display:flex;gap:13px;flex-wrap:wrap;padding:10px 3px;color:var(--muted);font-size:10px}.legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
+  .detail-grid{grid-template-columns:1fr 1fr;margin-bottom:14px}.detail{padding:18px}.site-title{display:flex;justify-content:space-between;align-items:flex-start}.site-title h3{margin:2px 0 4px;font-size:20px}.site-title .code{font-size:10px;color:var(--muted)}.metric-bars{margin-top:16px;display:grid;gap:10px}.bar-row{display:grid;grid-template-columns:116px 1fr 44px;gap:8px;align-items:center;font-size:11px}.track{height:7px;background:#12283f;border-radius:999px;overflow:hidden}.fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--violet))}.detail-note{margin-top:15px;border:1px dashed #31506c;border-radius:11px;padding:12px;font-size:11px;color:var(--muted);line-height:1.5}.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}.chip{font-size:9px;border:1px solid #274660;border-radius:999px;padding:5px 8px;color:#a9bed0;background:rgba(255,255,255,.02)}
+  .decision-card{padding:18px;display:grid;gap:13px}.decision-banner{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}.decision-banner .micro{font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted)}.decision-banner .big{font-size:29px;font-weight:900;margin:4px 0}.decision-banner .big span{color:var(--cyan)}.confidence{border:1px solid rgba(139,124,255,.32);background:rgba(139,124,255,.07);padding:11px 13px;border-radius:12px;text-align:right;min-width:116px}.confidence strong{font-size:20px}.confidence div{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}.decision-box{border:1px solid rgba(255,200,87,.34);background:linear-gradient(135deg,rgba(255,200,87,.09),rgba(255,200,87,.035));padding:15px 16px;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(255,200,87,.035),0 10px 30px rgba(0,0,0,.16)}.decision-box .title{display:flex;align-items:center;gap:7px;color:var(--amber);font-weight:900;font-size:10px;letter-spacing:.13em;text-transform:uppercase}.decision-box .title::after{content:'CRITICAL ASSUMPTION';font-size:8px;letter-spacing:.12em;padding:4px 7px;border:1px solid rgba(255,200,87,.22);border-radius:999px;color:#ffe3a0;background:rgba(255,200,87,.06)}.decision-box p{margin:8px 0 0;font-size:12px;line-height:1.55;color:#f1e7cf}.actions{display:flex;gap:8px;flex-wrap:wrap}.action{padding:9px 11px;border-radius:10px;border:1px solid #254761;background:#0b1a2b;color:#d7e5f2;font-size:10px}.action b{color:var(--cyan)}
+  .controls{padding:17px}.control-row{display:grid;grid-template-columns:180px 1fr 54px;gap:10px;align-items:center;margin:14px 0}.control-row label{font-size:11px;color:#b6c7d6}.control-row input[type=range]{width:100%;accent-color:#40d9ff}.control-val{font-weight:800;text-align:right;font-size:11px}.helper{font-size:10px;color:var(--muted);line-height:1.45}.weight-balance{height:7px;border-radius:999px;background:#10263d;overflow:hidden;margin-top:7px}.weight-fill{height:100%;background:linear-gradient(90deg,#40d9ff,#8b7cff);width:100%}
+  .ai-card{padding:17px}.ai-head{display:flex;gap:9px;align-items:center}.ai-orb{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,white 0 7%,#40d9ff 8% 18%,#8b7cff 35%,transparent 66%),#10243a;box-shadow:0 0 22px rgba(64,217,255,.2)}.ai-head h3{margin:0;font-size:13px}.ai-head small{color:var(--muted);font-size:9px}.ai-text{margin:14px 0 0;color:#c8d7e5;font-size:12px;line-height:1.65}.ai-footer{display:flex;justify-content:space-between;gap:10px;margin-top:14px;align-items:center}.ai-footer small{font-size:9px;color:#718aa2}
+  .page{display:none}.page.active{display:block}.split{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.spec-table{width:100%;border-collapse:collapse;font-size:11px}.spec-table td{padding:9px 0;border-bottom:1px solid rgba(32,57,85,.62)}.spec-table td:first-child{color:var(--muted);width:45%}.formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#bfeeff;font-size:11px;line-height:1.7;background:#071523;border:1px solid #173047;padding:12px;border-radius:12px;white-space:pre-wrap}.upload{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.file-note{font-size:10px;color:var(--muted)}
+  .tooltip{position:absolute;pointer-events:none;background:#07111f;border:1px solid #2b4961;color:#eaf4ff;padding:7px 9px;border-radius:8px;font-size:10px;box-shadow:0 8px 24px rgba(0,0,0,.3);display:none}
+  @media(max-width:1150px){.shell{grid-template-columns:1fr}.sidebar{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.dashboard-grid,.detail-grid,.split{grid-template-columns:1fr}.rank-row{grid-template-columns:28px 1.3fr .8fr .7fr 70px}.rank-row .hide-md{display:none}}
+  @media(max-width:650px){main{padding:18px 13px}.topbar{padding:0 14px}.hero{flex-direction:column;align-items:flex-start}.kpis{grid-template-columns:1fr 1fr}.kpi .value{font-size:19px}.rank-row{grid-template-columns:24px 1.4fr .8fr 65px}.rank-row > :nth-child(4){display:none}.control-row{grid-template-columns:120px 1fr 45px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="mark">N</div><div><h1>NEXTSTORE</h1><div class="sub">AI-assisted Retail Expansion Decision OS</div></div></div>
+    <div class="top-actions"><span class="pill live">● PROTOTYPE LIVE</span><span class="pill">Synthetic data</span></div>
+  </header>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="nav-title">Decision cockpit</div>
+      <div class="nav">
+        <button class="active" data-page="dashboard"><span>◈</span>Portfolio cockpit</button>
+        <button data-page="deepdive"><span>◎</span>Site deep dive</button>
+        <button data-page="stress"><span>⌁</span>Decision stress test</button>
+        <button data-page="logic"><span>∑</span>Data & logic</button>
+      </div>
+      <div class="nav-title">Prototype actions</div>
+      <div class="nav">
+        <button id="loadSample"><span>↺</span>Reset sample</button>
+        <button id="copyBrief"><span>⧉</span>Copy decision brief</button>
+      </div>
+      <div class="side-note"><b style="color:#dceaf6">Design principle</b><br>AI explains and challenges deterministic business logic. It does not invent the numbers.</div>
+    </aside>
+    <main>
+      <section id="dashboard" class="page active">
+        <div class="hero">
+          <div><div class="eyebrow">Expansion decision cockpit</div><h2>Turn location data into an investment action.</h2><p>Evaluate demand quality, unit economics, competition, accessibility and network overlap — then stress-test the decision before capital is committed.</p></div>
+          <div class="hero-right"><button class="btn" id="downloadData">Download dataset</button><button class="btn primary" id="goStress">Test the recommendation →</button></div>
+        </div>
+        <div class="grid kpis">
+          <div class="card kpi"><div class="label">Recommended site</div><div class="value" id="kpiSite">—</div><div class="delta">highest net incremental value</div></div>
+          <div class="card kpi"><div class="label">Net incremental value</div><div class="value" id="kpiNet">—</div><div class="delta">12-month contribution proxy</div></div>
+          <div class="card kpi"><div class="label">Return on capex</div><div class="value accent" id="kpiROI">—</div><div class="delta">net value ÷ setup capex</div></div>
+          <div class="card kpi"><div class="label">Decision confidence</div><div class="value" id="kpiConf">—</div><div class="delta">input-quality + sensitivity signal</div></div>
+        </div>
+        <div class="grid dashboard-grid">
+          <div class="card rank-card"><div class="card-head"><h3>Location portfolio</h3><small>ranked by net incremental value</small></div><div id="rankTable"></div></div>
+          <div class="card"><div class="card-head"><h3>Network view</h3><small>candidate / existing / competitor</small></div><div class="map-wrap"><div class="map" id="map"><div class="tooltip" id="tooltip"></div></div><div class="map-legend"><span><i class="legend-dot" style="background:#40d9ff"></i>Candidate</span><span><i class="legend-dot" style="background:#8b7cff"></i>Existing</span><span><i class="legend-dot" style="background:#6d7d8b"></i>Competitor</span></div></div></div>
+        </div>
+        <div class="grid detail-grid">
+          <div class="card detail" id="selectedDetail"></div>
+          <div class="card decision-card" id="decisionCard"></div>
+        </div>
+        <div class="grid detail-grid">
+          <div class="card controls"><div class="card-head" style="margin:-17px -17px 4px"><h3>Strategic priority tuner</h3><small>weights sum automatically to 100%</small></div><div id="weightControls"></div><div class="helper">The score is directional. Capital decisions are anchored on net incremental value, while weights help surface trade-offs.</div></div>
+          <div class="card ai-card" id="aiCard"></div>
+        </div>
+      </section>
+
+      <section id="deepdive" class="page">
+        <div class="hero"><div><div class="eyebrow">Site deep dive</div><h2>Why this location?</h2><p>Move from a single score to a business narrative that exposes the commercial mechanics behind the recommendation.</p></div></div>
+        <div class="split"><div class="card detail" id="deepDetail"></div><div class="card ai-card" id="deepAI"></div></div>
+      </section>
+
+      <section id="stress" class="page">
+        <div class="hero"><div><div class="eyebrow">Decision stress test</div><h2>What would change the decision?</h2><p>Simulate operating conditions and see when the preferred location falls behind the next-best alternative.</p></div></div>
+        <div class="split"><div class="card controls"><div class="card-head" style="margin:-17px -17px 10px"><h3>Scenario controls</h3><small>current selection updates live</small></div><div id="scenarioControls"></div><div class="detail-note" id="stressResult"></div></div><div class="card detail" id="stressCompare"></div></div>
+      </section>
+
+      <section id="logic" class="page">
+        <div class="hero"><div><div class="eyebrow">Transparent prototype</div><h2>Data, assumptions & decision logic.</h2><p>The app is intentionally explainable: deterministic calculations first, AI synthesis second.</p></div><div class="upload"><input type="file" id="fileInput" accept=".csv" class="btn"><span class="file-note">Upload a CSV with the sample column structure to test the workflow.</span></div></div>
+        <div class="split"><div class="card detail"><div class="card-head" style="margin:-18px -18px 9px"><h3>Core assumptions</h3><small>illustrative only</small></div><table class="spec-table" id="assumptions"></table></div><div class="card detail"><div class="card-head" style="margin:-18px -18px 9px"><h3>Model blocks</h3><small>prototype v0.1</small></div><div class="formula">Qualified demand = daily footfall × (income / candidate median income)\n\nOpportunity score = weighted MCDA across demand, economics, competition, accessibility and network impact\n\nCannibalisation = simplified distance-decay proxy inspired by gravity / Huff logic\n\nNet incremental value = annual sales × contribution margin − rent − cannibalised contribution loss\n\nAI layer = explain + challenge + recommend validation action\n\nProduction note: calibrate coefficients against actual transactions, mobility, catchment and store P&L data.</div></div></div>
+      </section>
+    </main>
+  </div>
+</div>
+<script>
+const DATA = {"meta":{"prototype":"NEXTSTORE","subtitle":"AI-assisted Retail Expansion Decision OS","data_type":"Synthetic / illustrative","currency":"INR crore","assumptions":{"conversion_rate":0.04,"average_basket_inr":470,"contribution_margin":0.4,"cannibalization_contribution_loss":0.18},"weights":{"demand":0.3,"economics":0.25,"competition":0.15,"accessibility":0.15,"network":0.15},"formula_notes":{"qualified_demand":"Daily footfall \u00d7 household income / candidate median income","cannibalisation":"Simplified distance-decay proxy inspired by gravity/Huff logic; not calibrated to real transactions","net_incremental_value":"Estimated annual sales \u00d7 contribution margin \u2212 rent \u2212 cannibalised contribution loss","ai_role":"AI explains and challenges deterministic outputs; it does not create or alter the numerical recommendation."}},"candidates":[{"site_id":"NS-01","site":"Northgate","x":17,"y":22,"population":185000,"income":92000,"footfall":7200,"competitor_count":4,"nearest_comp_km":0.9,"rent_cr":0.92,"accessibility":90,"transit":88,"parking":72,"visibility":84,"own_nearest_km":2.8,"capex_cr":3.8,"comparable_store_sales_cr":4.6,"income_factor":0.8975609756097561,"qualified_footfall":6462.439024390244,"annual_sales_cr":4.434525658536585,"rent_ratio":0.2074630007448428,"demand_score":0.31895604395604393,"competitor_score":0.3917410714285714,"access_score":0.867,"economics_score":0.3084566641838573,"cannib_rate":0.13235244357601222,"network_score":0.5588251880799593,"gross_incremental_contribution":0.8538102634146342,"cannibalized_sales_cr":0.5869203070078418,"cannib_loss_cr":0.10564565526141152,"net_contribution_cr":0.7481646081532226,"roi_pct":19.688542319821646,"payback_months":60.9491541073555,"opportunity":44.54359181590571,"confidence":78.37471334635981,"status":"VALIDATE","nearest_existing":"Store 01","nearest_existing_distance_km":0.894427190999916,"rank":6},{"site_id":"NS-02","site":"Civic Square","x":45,"y":29,"population":212000,"income":118000,"footfall":7000,"competitor_count":2,"nearest_comp_km":1.8,"rent_cr":0.78,"accessibility":93,"transit":96,"parking":79,"visibility":91,"own_nearest_km":6.9,"capex_cr":3.5,"comparable_store_sales_cr":4.9,"income_factor":1.1512195121951219,"qualified_footfall":8058.536585365853,"annual_sales_cr":5.529767804878048,"rent_ratio":0.14105474723765582,"demand_score":0.5067307692307692,"competitor_score":0.6763392857142857,"access_score":0.9220000000000002,"economics_score":0.5298175092078139,"cannib_rate":0.17275541376674294,"network_score":0.42414862077752347,"gross_incremental_contribution":1.4319071219512194,"cannibalized_sales_cr":0.9552973251657211,"cannib_loss_cr":0.1719535185298298,"net_contribution_cr":1.2599536034213896,"roi_pct":35.99867438346828,"payback_months":33.33456080124655,"opportunity":58.78467940449556,"confidence":80.90866879349886,"status":"OPEN","nearest_existing":"Store 03","nearest_existing_distance_km":1.2026637102698328,"rank":1},{"site_id":"NS-03","site":"Riverside","x":70,"y":19,"population":198000,"income":104000,"footfall":8800,"competitor_count":5,"nearest_comp_km":0.6,"rent_cr":1.36,"accessibility":82,"transit":74,"parking":85,"visibility":86,"own_nearest_km":3.1,"capex_cr":4.6,"comparable_store_sales_cr":5.1,"income_factor":1.0146341463414634,"qualified_footfall":8928.780487804877,"annual_sales_cr":6.126929170731707,"rent_ratio":0.22197090289483182,"demand_score":0.5846153846153846,"competitor_score":0.2611607142857143,"access_score":0.805,"economics_score":0.26009699035056055,"cannib_rate":0.14165694120644268,"network_score":0.5278101959785244,"gross_incremental_contribution":1.090771668292683,"cannibalized_sales_cr":0.86792204531438,"cannib_loss_cr":0.1562259681565884,"net_contribution_cr":0.9345457001360945,"roi_pct":20.316210872523797,"payback_months":59.06613233784225,"opportunity":47.950449951189135,"confidence":73.65514588190337,"status":"VALIDATE","nearest_existing":"Store 03","nearest_existing_distance_km":1.1892854997854805,"rank":5},{"site_id":"NS-04","site":"East Market","x":82,"y":58,"population":245000,"income":76000,"footfall":10600,"competitor_count":7,"nearest_comp_km":0.4,"rent_cr":0.98,"accessibility":86,"transit":82,"parking":66,"visibility":88,"own_nearest_km":5.1,"capex_cr":3.9,"comparable_store_sales_cr":5.4,"income_factor":0.7414634146341463,"qualified_footfall":7859.512195121951,"annual_sales_cr":5.393197268292683,"rent_ratio":0.18171039389965374,"demand_score":0.55,"competitor_score":0.03125,"access_score":0.831,"economics_score":0.3942986870011542,"cannib_rate":0.1461139354734792,"network_score":0.512953548421736,"gross_incremental_contribution":1.1772789073170733,"cannibalized_sales_cr":0.7880212776550614,"cannib_loss_cr":0.14184382997791103,"net_contribution_cr":1.0354350773391623,"roi_pct":26.54961736767083,"payback_months":45.19839150153729,"opportunity":46.9855204013549,"confidence":73.24829096789782,"status":"OPEN","nearest_existing":"Store 05","nearest_existing_distance_km":1.6492422502470643,"rank":4},{"site_id":"NS-05","site":"Tech Park","x":54,"y":75,"population":142000,"income":132000,"footfall":5400,"competitor_count":1,"nearest_comp_km":3.2,"rent_cr":0.72,"accessibility":88,"transit":90,"parking":92,"visibility":78,"own_nearest_km":8.4,"capex_cr":3.1,"comparable_store_sales_cr":4.5,"income_factor":1.2878048780487805,"qualified_footfall":6954.1463414634145,"annual_sales_cr":4.771935219512196,"rent_ratio":0.15088218235988562,"demand_score":0.45,"competitor_score":0.8928571428571429,"access_score":0.875,"economics_score":0.49705939213371453,"cannib_rate":0.1541721915122362,"network_score":0.4860926949592126,"gross_incremental_contribution":1.1887740878048785,"cannibalized_sales_cr":0.7356997105466192,"cannib_loss_cr":0.13242594789839146,"net_contribution_cr":1.0563481399064871,"roi_pct":34.075746448596355,"payback_months":35.21566290001052,"opportunity":59.73573237058819,"confidence":82.68741712731645,"status":"OPEN","nearest_existing":"Store 05","nearest_existing_distance_km":1.0182337649086284,"rank":3},{"site_id":"NS-06","site":"Lakeview","x":25,"y":78,"population":165000,"income":101000,"footfall":6900,"competitor_count":3,"nearest_comp_km":1.5,"rent_cr":0.68,"accessibility":79,"transit":72,"parking":94,"visibility":73,"own_nearest_km":7.8,"capex_cr":3.0,"comparable_store_sales_cr":4.2,"income_factor":0.9853658536585366,"qualified_footfall":6799.024390243902,"annual_sales_cr":4.665490536585366,"rent_ratio":0.14575101903382842,"demand_score":0.3595467032967033,"competitor_score":0.5457589285714286,"access_score":0.7750000000000001,"economics_score":0.5141632698872386,"cannib_rate":0.12386954018596417,"network_score":0.5871015327134528,"gross_incremental_contribution":1.1861962146341463,"cannibalized_sales_cr":0.5779121675087965,"cannib_loss_cr":0.10402419015158336,"net_contribution_cr":1.082172024482563,"roi_pct":36.072400816085434,"payback_months":33.26643009203022,"opportunity":52.25838976535528,"confidence":80.14195689721053,"status":"OPEN","nearest_existing":"Store 06","nearest_existing_distance_km":1.1892854997854805,"rank":2}],"existing_stores":[{"store_id":"ES-01","store":"Store 01","x":12,"y":32,"sales_cr":4.3},{"store_id":"ES-02","store":"Store 02","x":34,"y":18,"sales_cr":5.2},{"store_id":"ES-03","store":"Store 03","x":60,"y":30,"sales_cr":6.1},{"store_id":"ES-04","store":"Store 04","x":77,"y":34,"sales_cr":4.8},{"store_id":"ES-05","store":"Store 05","x":63,"y":66,"sales_cr":5.6},{"store_id":"ES-06","store":"Store 06","x":36,"y":68,"sales_cr":4.7},{"store_id":"ES-07","store":"Store 07","x":88,"y":78,"sales_cr":5.3},{"store_id":"ES-08","store":"Store 08","x":18,"y":62,"sales_cr":3.9}],"competitors":[{"id":"C-01","x":22,"y":27},{"id":"C-02","x":41,"y":31},{"id":"C-03","x":71,"y":20},{"id":"C-04","x":66,"y":28},{"id":"C-05","x":81,"y":56},{"id":"C-06","x":87,"y":48},{"id":"C-07","x":51,"y":79},{"id":"C-08","x":29,"y":82},{"id":"C-09","x":74,"y":67},{"id":"C-10","x":92,"y":73},{"id":"C-11","x":58,"y":12},{"id":"C-12","x":14,"y":76}],"decision_breaker":{"site":"Civic Square","runner_up":"Lakeview","break_type":"footfall","shock_fraction":0.08799999999999997,"top_under_shock":1.0804376863203073,"runner_under_base":1.082172024482563}};
+let candidates = structuredClone(DATA.candidates);
+let existing = structuredClone(DATA.existing_stores);
+let competitors = structuredClone(DATA.competitors);
+const assumptions = structuredClone(DATA.meta.assumptions);
+let weights = structuredClone(DATA.meta.weights);
+let selectedId = DATA.candidates.find(x=>x.site==='Civic Square')?.site_id || DATA.candidates[0].site_id;
+let scenarios = {footfall:1.00,rent:1.00,cannib:1.00};
+
+function median(arr){arr=[...arr].sort((a,b)=>a-b);const m=Math.floor(arr.length/2);return arr.length%2?arr[m]:(arr[m-1]+arr[m])/2}
+function norm(v,lo,hi){return hi===lo?.5:(v-lo)/(hi-lo)}
+function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
+function fmtCr(v){return '₹'+Number(v).toFixed(2)+' Cr'}
+function fmtPct(v){return Number(v).toFixed(0)+'%'}
+function fmtNum(v){return new Intl.NumberFormat('en-IN',{maximumFractionDigits:0}).format(v)}
+
+function recompute(){
+  const medianIncome=median(candidates.map(c=>c.income));
+  const maxSales=Math.max(...existing.map(s=>s.sales_cr));
+  const keys=['footfall','income','accessibility','transit','parking','visibility','competitor_count','nearest_comp_km','rent_cr','capex_cr'];
+  const mins=Object.fromEntries(keys.map(k=>[k,Math.min(...candidates.map(c=>c[k]))]));
+  const maxs=Object.fromEntries(keys.map(k=>[k,Math.max(...candidates.map(c=>c[k]))]));
+  candidates.forEach(c=>{
+    c.income_factor=c.income/medianIncome;
+    c.qualified_footfall=c.footfall*c.income_factor;
+    c.annual_sales_cr=c.qualified_footfall*assumptions.conversion_rate*assumptions.average_basket_inr*365/1e7;
+    const rentRatio=c.rent_cr/c.annual_sales_cr;
+    c.demand_score=.55*norm(c.footfall,mins.footfall,maxs.footfall)+.45*norm(c.income,mins.income,maxs.income);
+    c.competitor_score=1-Math.min(1,.75*(c.competitor_count/7)+.25*(1-Math.min(c.nearest_comp_km,3.2)/3.2));
+    c.access_score=(.45*c.accessibility+.30*c.transit+.10*c.parking+.15*c.visibility)/100;
+    let raw=0; let closest=[];
+    existing.forEach(s=>{const dkm=Math.max(.7,dist(c,s)*.08);const impact=Math.exp(-dkm/2.4)*(s.sales_cr/maxSales);raw+=impact;closest.push({dkm,s,impact})});
+    closest.sort((a,b)=>a.dkm-b.dkm); c.cannib_rate=Math.min(.30,raw*.075); c.network_score=1-c.cannib_rate/.30;
+    c.economics_score=Math.max(0,1-rentRatio/.30);
+    c.gross_incremental_contribution=c.annual_sales_cr*assumptions.contribution_margin-c.rent_cr;
+    c.cannibalized_sales_cr=c.annual_sales_cr*c.cannib_rate;
+    c.cannib_loss_cr=c.cannibalized_sales_cr*assumptions.cannibalization_contribution_loss;
+    c.net_contribution_cr=c.gross_incremental_contribution-c.cannib_loss_cr;
+    c.roi_pct=c.net_contribution_cr/c.capex_cr*100;
+    c.payback_months=c.net_contribution_cr>0?c.capex_cr/c.net_contribution_cr*12:null;
+    c.opportunity=100*(weights.demand*c.demand_score+weights.economics*c.economics_score+weights.competition*c.competitor_score+weights.accessibility*c.access_score+weights.network*c.network_score);
+    c.confidence=Math.max(58,Math.min(91,85-(c.competitor_count-1)*1.5-Math.max(0,c.rent_cr-.9)*7-c.cannib_rate*15));
+    c.status=c.net_contribution_cr>=.95 && c.roi_pct>=25?'OPEN':(c.net_contribution_cr>=.55?'VALIDATE':'REJECT');
+    c.nearest_existing=closest[0]?.s.store||'—'; c.nearest_existing_distance_km=closest[0]?.dkm||0;
+  });
+  candidates.sort((a,b)=>b.net_contribution_cr-a.net_contribution_cr || b.opportunity-a.opportunity);
+  candidates.forEach((c,i)=>c.rank=i+1);
+  return candidates;
+}
+
+function recomputeScenario(c,footfallMult=1,rentMult=1,cannibMult=1){
+  const sales=c.annual_sales_cr*footfallMult;
+  return sales*assumptions.contribution_margin-c.rent_cr*rentMult-sales*c.cannib_rate*assumptions.cannibalization_contribution_loss*cannibMult;
+}
+function decisionBreaker(c){
+  const runner=candidates.find(x=>x.site_id!==c.site_id);
+  let foot=null,rent=null;
+  for(let i=0;i<=300;i++){const m=1-i/1000;if(recomputeScenario(c,m,1,1)<recomputeScenario(runner,1,1,1)){foot=1-m;break}}
+  for(let i=0;i<=600;i++){const m=1+i/1000;if(recomputeScenario(c,1,m,1)<recomputeScenario(runner,1,1,1)){rent=m-1;break}}
+  if(foot===null && rent===null) return {type:'none'};
+  if(rent===null || (foot!==null && foot<=rent)) return {type:'footfall',value:foot,runner:runner.site};
+  return {type:'rent',value:rent,runner:runner.site};
+}
+
+function mapSVG(){
+  const svgW=800,svgH=315;
+  const lines=[];
+  // abstract grid / roads
+  for(let x=20;x<800;x+=65) lines.push(`<path d="M ${x} 0 L ${x+80} ${svgH}" stroke="#13314b" stroke-width="1" opacity=".55"/>`);
+  for(let y=20;y<315;y+=48) lines.push(`<path d="M 0 ${y} C 180 ${y-20}, 420 ${y+35}, 800 ${y-10}" stroke="#173650" stroke-width="1" fill="none" opacity=".65"/>`);
+  candidates.forEach(c=>{const sel=c.site_id===selectedId;const r=sel?11:7;lines.push(`<g class="cand" data-id="${c.site_id}" tabindex="0"><circle cx="${c.x/100*svgW}" cy="${c.y/100*svgH}" r="${r+8}" fill="${sel?'rgba(64,217,255,.12)':'rgba(64,217,255,.05)'}"/><circle cx="${c.x/100*svgW}" cy="${c.y/100*svgH}" r="${r}" fill="#40d9ff" stroke="#dffbff" stroke-width="1.5"/><text x="${c.x/100*svgW+12}" y="${c.y/100*svgH+4}" fill="#bfeeff" font-size="10">${c.site}</text></g>`)});
+  existing.forEach(s=>{lines.push(`<g><circle cx="${s.x/100*svgW}" cy="${s.y/100*svgH}" r="6" fill="#8b7cff" opacity=".88"/><circle cx="${s.x/100*svgW}" cy="${s.y/100*svgH}" r="10" fill="none" stroke="#8b7cff" opacity=".2"/><text x="${s.x/100*svgW+9}" y="${s.y/100*svgH+3}" fill="#8779e9" font-size="8">${s.store}</text></g>`)});
+  competitors.forEach(c=>{lines.push(`<circle cx="${c.x/100*svgW}" cy="${c.y/100*svgH}" r="3" fill="#6d7d8b" opacity=".8"/>`)});
+  return `<svg viewBox="0 0 ${svgW} ${svgH}" preserveAspectRatio="none">${lines.join('')}</svg>`;
+}
+
+function selected(){return candidates.find(c=>c.site_id===selectedId)||candidates[0]}
+function render(){
+  recompute();
+  const top=candidates[0];
+  document.getElementById('kpiSite').textContent=top.site;
+  document.getElementById('kpiNet').textContent=fmtCr(top.net_contribution_cr);
+  document.getElementById('kpiROI').textContent=fmtPct(top.roi_pct);
+  document.getElementById('kpiConf').textContent=fmtPct(top.confidence);
+  renderTable(); renderMap(); renderDetail(); renderDecision(); renderAI(); renderDeep(); renderLogic();
+}
+function renderTable(){
+  const el=document.getElementById('rankTable');
+  el.innerHTML=candidates.map(c=>`<div class="rank-row"><div class="rank-num">${String(c.rank).padStart(2,'0')}</div><div><button class="site-btn" onclick="pick('${c.site_id}')">${c.site}</button><div class="site-sub">${c.site_id} · ${c.competitor_count} competitors</div></div><div class="num"><b>${fmtCr(c.net_contribution_cr)}</b><div class="site-sub">net value</div></div><div class="num hide-md"><b>${fmtPct(c.roi_pct)}</b><div class="site-sub">ROI</div></div><div class="num hide-md"><b>${c.opportunity.toFixed(0)}</b><div class="site-sub">score</div></div><div class="status ${c.status.toLowerCase()}">${c.status}</div></div>`).join('');
+}
+function renderMap(){document.getElementById('map').innerHTML=mapSVG()+`<div class="tooltip" id="tooltip"></div>`;document.querySelectorAll('.cand').forEach(g=>{g.addEventListener('click',()=>pick(g.dataset.id));g.addEventListener('mouseenter',e=>{const c=candidates.find(x=>x.site_id===g.dataset.id);const t=document.getElementById('tooltip');const mapRect=document.getElementById('map').getBoundingClientRect();t.innerHTML=`<b>${c.site}</b><br>${fmtCr(c.net_contribution_cr)} net value · ${c.status}`;t.style.display='block';t.style.left=(e.clientX-mapRect.left+15)+'px';t.style.top=(e.clientY-mapRect.top+15)+'px'});g.addEventListener('mouseleave',()=>{document.getElementById('tooltip').style.display='none'})})}
+function renderDetail(){const c=selected();const metrics=[['Demand quality',c.demand_score*100],['Economics',c.economics_score*100],['Competition',c.competitor_score*100],['Accessibility',c.access_score*100],['Network impact',c.network_score*100]];document.getElementById('selectedDetail').innerHTML=`<div class="site-title"><div><div class="code">${c.site_id}</div><h3>${c.site}</h3><div class="site-sub">${c.population.toLocaleString('en-IN')} population · ₹${(c.income/1000).toFixed(0)}k avg HH income · ${fmtNum(c.footfall)} daily footfall</div></div><div class="status ${c.status.toLowerCase()}">${c.status}</div></div><div class="metric-bars">${metrics.map(m=>`<div class="bar-row"><div>${m[0]}</div><div class="track"><div class="fill" style="width:${Math.max(5,Math.min(100,m[1]))}%"></div></div><div class="num">${m[1].toFixed(0)}</div></div>`).join('')}</div><div class="chips"><span class="chip">Rent ${fmtCr(c.rent_cr)}/yr</span><span class="chip">Est. sales ${fmtCr(c.annual_sales_cr)}</span><span class="chip">Cannib. ${(c.cannib_rate*100).toFixed(1)}%</span><span class="chip">Capex ${fmtCr(c.capex_cr)}</span><span class="chip">Payback ${c.payback_months?c.payback_months.toFixed(1):'—'} mo</span></div>`}
+function renderDecision(){const c=candidates[0], b=decisionBreaker(c);let text='';if(b.type==='footfall')text=`If realized footfall is about <b>${(b.value*100).toFixed(1)}%</b> below forecast, ${b.runner} overtakes ${c.site}.`;else if(b.type==='rent')text=`If annual rent rises about <b>${(b.value*100).toFixed(1)}%</b>, ${b.runner} overtakes ${c.site}.`;else text='No breakpoint found inside the tested range.';const action=c.cannib_rate>0.15?'Validate catchment overlap before lease signing.':'Validate footfall and conversion before lease signing.';document.getElementById('decisionCard').innerHTML=`<div class="decision-banner"><div><div class="micro">Current portfolio recommendation</div><div class="big"><span>${c.site}</span> · ${fmtCr(c.net_contribution_cr)}</div><div style="color:#8ea6be;font-size:11px">${c.status} · highest modeled net incremental value</div></div><div class="confidence"><strong>${c.confidence.toFixed(0)}%</strong><div>decision confidence</div></div></div><div class="decision-box"><div class="title">⚠ Decision breaker</div><p>${text}</p></div><div class="actions"><div class="action"><b>Next validation:</b> ${action}</div><div class="action"><b>Primary trade-off:</b> High demand quality vs network overlap</div></div>`}
+function brief(c){const demand=c.demand_score>0.75?'strong demand quality':c.demand_score>0.5?'balanced demand quality':'mixed demand quality';const economics=c.economics_score>0.6?'attractive unit economics':c.economics_score>0.35?'moderate unit economics':'tight unit economics';const comp=c.competitor_score>0.65?'manageable competition':'meaningful competitive pressure';const net=`${fmtCr(c.net_contribution_cr)} estimated annual net incremental value`;return `Recommend ${c.site} as the current expansion candidate. The location combines ${demand}, ${economics}, and ${comp}, producing ${net} on the illustrative base case. Its main watch-out is ${(c.cannib_rate*100).toFixed(1)}% modeled cannibalisation of the existing network. Before committing capital, validate the assumption with the highest decision sensitivity rather than treating the model output as certainty.`}
+function renderAI(){const c=candidates[0];document.getElementById('aiCard').innerHTML=`<div class="ai-head"><div class="ai-orb"></div><div><h3>AI Decision Brief</h3><small>Executive synthesis · simulated LLM layer</small></div></div><div class="ai-text">${brief(c)}</div><div class="ai-footer"><small>Prototype note: the LLM layer is simulated here; it explains deterministic outputs and does not alter the numbers.</small><button class="btn" onclick="copyText(brief(selected()))">Copy brief</button></div>`}
+function renderDeep(){const c=selected();document.getElementById('deepDetail').innerHTML=`<div class="site-title"><div><div class="code">DEEP DIVE · ${c.site_id}</div><h3>${c.site}</h3><div class="site-sub">Why the site scores the way it does</div></div><div class="status ${c.status.toLowerCase()}">${c.status}</div></div><div class="metric-bars">${[['Qualified demand',Math.min(100,c.demand_score*100)],['Economics',c.economics_score*100],['Competition',c.competitor_score*100],['Access',c.access_score*100],['Network protection',c.network_score*100]].map(m=>`<div class="bar-row"><div>${m[0]}</div><div class="track"><div class="fill" style="width:${m[1]}%"></div></div><div class="num">${m[1].toFixed(0)}</div></div>`).join('')}</div><div class="detail-note"><b style="color:#dceaf6">Commercial read:</b><br>${c.site} is modeled at ${fmtCr(c.annual_sales_cr)} annual sales with ${fmtCr(c.rent_cr)} rent and ${(c.cannib_rate*100).toFixed(1)}% network cannibalisation. The key decision is whether the incremental contribution justifies the capital required.</div>`;document.getElementById('deepAI').innerHTML=`<div class="ai-head"><div class="ai-orb"></div><div><h3>AI Site Narrator</h3><small>HITL-friendly explanation</small></div></div><div class="ai-text">${brief(c)}</div><div class="detail-note">Suggested human-in-the-loop check: confirm footfall quality, competitor intensity and store-catchment overlap before moving from prototype to investment decision.</div>`}
+function syncWeightControls(){
+  document.querySelectorAll('#weightControls input').forEach(s=>{
+    s.value=Math.round(weights[s.dataset.key]*100);
+    const out=document.getElementById('w_'+s.dataset.key);
+    if(out) out.textContent=s.value+'%';
+  });
+}
+function renderWeights(){
+  const labels={demand:'Demand quality',economics:'Unit economics',competition:'Competition',accessibility:'Accessibility',network:'Network protection'};
+  document.getElementById('weightControls').innerHTML=Object.entries(weights).map(([k,v])=>`<div class="control-row"><label>${labels[k]}</label><input type="range" min="5" max="50" value="${Math.round(v*100)}" data-key="${k}"><div class="control-val" id="w_${k}">${Math.round(v*100)}%</div></div>`).join('')+`<div class="weight-balance"><div class="weight-fill"></div></div>`;
+  document.querySelectorAll('#weightControls input').forEach(inp=>inp.addEventListener('input',e=>{
+    weights[e.target.dataset.key]=Number(e.target.value)/100;
+    const sum=Object.values(weights).reduce((a,b)=>a+b,0);
+    Object.keys(weights).forEach(k=>{weights[k]/=sum});
+    syncWeightControls();
+    render();
+  }));
+}
+function renderStress(){
+  const vals={footfall:scenarios.footfall,rent:scenarios.rent,cannib:scenarios.cannib};
+  const root=document.getElementById('scenarioControls');
+  root.innerHTML=`<div class="control-row"><label>Footfall realization</label><input type="range" min="75" max="115" value="${vals.footfall*100}" id="sf"><div class="control-val" id="svf">${(vals.footfall*100).toFixed(0)}%</div></div><div class="control-row"><label>Rent vs base</label><input type="range" min="80" max="125" value="${vals.rent*100}" id="sr"><div class="control-val" id="svr">${(vals.rent*100).toFixed(0)}%</div></div><div class="control-row"><label>Cannibalisation sensitivity</label><input type="range" min="75" max="140" value="${vals.cannib*100}" id="sc"><div class="control-val" id="svc">${(vals.cannib*100).toFixed(0)}%</div></div>`;
+  [['sf','footfall','svf'],['sr','rent','svr'],['sc','cannib','svc']].forEach(([id,key,out])=>document.getElementById(id).addEventListener('input',e=>{
+    scenarios[key]=Number(e.target.value)/100;
+    document.getElementById(out).textContent=`${e.target.value}%`;
+    refreshStress();
+  }));
+  refreshStress();
+}
+function syncStressControls(){
+  const map=[['sf','footfall','svf'],['sr','rent','svr'],['sc','cannib','svc']];
+  map.forEach(([id,key,out])=>{const s=document.getElementById(id);const o=document.getElementById(out);if(s){s.value=scenarios[key]*100}if(o){o.textContent=(scenarios[key]*100).toFixed(0)+'%'}});
+}
+function refreshStress(){const c=selected();const ranked=candidates;const values=ranked.map(x=>({x,v:recomputeScenario(x,scenarios.footfall,scenarios.rent,scenarios.cannib)})).sort((a,b)=>b.v-a.v);const winner=values[0];const baseTop=ranked[0];const baselineRunner=ranked.find(x=>x.site_id!==baseTop.site_id);const current=values.find(x=>x.x.site_id===c.site_id);document.getElementById('stressResult').innerHTML=`<b style="color:#dceaf6">Scenario result:</b> ${winner.x.site} ranks first at <b>${fmtCr(winner.v)}</b> annual net incremental value under the current assumptions. <br><br><b style="color:#40d9ff">Selected site:</b> ${c.site} · ${fmtCr(current.v)}. <br><b style="color:#ffc857">Interpretation:</b> changing the assumptions changes the economics — the dashboard is designed to surface that trade-off, not hide it.`;document.getElementById('stressCompare').innerHTML=`<div class="card-head" style="margin:-18px -18px 7px"><h3>Portfolio ranking under scenario</h3><small>net incremental value</small></div>${values.map((a,i)=>`<div class="rank-row" style="grid-template-columns:28px 1fr auto;padding-left:0;padding-right:0"><div class="rank-num">${i+1}</div><div><b>${a.x.site}</b><div class="site-sub">Base ${fmtCr(a.x.net_contribution_cr)}</div></div><div class="num"><b>${fmtCr(a.v)}</b></div></div>`).join('')}`}
+function renderLogic(){document.getElementById('assumptions').innerHTML=`<tr><td>Conversion rate</td><td>${(assumptions.conversion_rate*100).toFixed(1)}%</td></tr><tr><td>Average basket</td><td>₹${assumptions.average_basket_inr}</td></tr><tr><td>Contribution margin</td><td>${(assumptions.contribution_margin*100).toFixed(0)}%</td></tr><tr><td>Cannibalised contribution loss</td><td>${(assumptions.cannibalization_contribution_loss*100).toFixed(0)}%</td></tr><tr><td>Candidate locations</td><td>${candidates.length}</td></tr><tr><td>Existing stores</td><td>${existing.length}</td></tr>`}
+function pick(id){selectedId=id;render();refreshStress();document.querySelector('[data-page="deepdive"]').click()}
+function copyText(t){navigator.clipboard?.writeText(t).then(()=>alert('Decision brief copied.'))}
+document.querySelectorAll('.nav button[data-page]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav button[data-page]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(btn.dataset.page).classList.add('active');}));
+document.getElementById('goStress').addEventListener('click',()=>document.querySelector('[data-page="stress"]').click());
+document.getElementById('copyBrief').addEventListener('click',()=>copyText(brief(selected())));
+document.getElementById('downloadData').addEventListener('click',()=>{const headers=Object.keys(DATA.candidates[0]);const csv=[headers.join(','),...candidates.map(c=>headers.map(h=>JSON.stringify(c[h]??'')).join(','))].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='nextstore_candidates.csv';a.click()});
+document.getElementById('loadSample').addEventListener('click',()=>{candidates=structuredClone(DATA.candidates);selectedId=DATA.candidates.find(x=>x.site==='Civic Square')?.site_id||DATA.candidates[0].site_id;weights=structuredClone(DATA.meta.weights);scenarios={footfall:1,rent:1,cannib:1};syncWeightControls();syncStressControls();render();refreshStress()});
+document.getElementById('fileInput').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const lines=r.result.trim().split(/\r?\n/);const parse=s=>{let out=[],cur='',q=false,row=[];for(let i=0;i<s.length;i++){const ch=s[i];if(ch==='"'){q=!q;continue}if(ch===','&&!q){row.push(cur);cur=''}else if((ch==='\n'||ch==='\r')&&!q){if(ch==='\r'&&s[i+1]==='\n')i++;row.push(cur);out.push(row);row=[];cur=''}else cur+=ch}if(cur!==''||row.length){row.push(cur);out.push(row)}return out};const rows=parse(r.result);const hdr=rows.shift();const idx=Object.fromEntries(hdr.map((h,i)=>[h,i]));const needed=['site_id','site','population','income','footfall','competitor_count','nearest_comp_km','rent_cr','accessibility','transit','parking','visibility','own_nearest_km','capex_cr','comparable_store_sales_cr'];if(!needed.every(k=>k in idx))throw new Error('CSV schema mismatch');candidates=rows.filter(r=>r.length).map(r=>Object.fromEntries(needed.map(k=>[k,isNaN(Number(r[idx[k]]))||k==='site_id'||k==='site'?r[idx[k]]:Number(r[idx[k]])])));selectedId=candidates[0].site_id;render();syncWeightControls();syncStressControls();refreshStress();alert('CSV loaded. Review the Data & logic tab before using it.');e.target.value='';}catch(err){alert('Could not load CSV: '+err.message);e.target.value=''}};r.readAsText(f)});
+renderWeights();
+renderStress();
+render();
+</script>
+</body>
+</html>
